@@ -1,0 +1,41 @@
+import torch
+import argparse
+def parse_args():
+    desc = "Pytorch implementation of FC network"
+    parser = argparse.ArgumentParser(description=desc)
+    #preparing
+    parser.add_argument('--dataset', type=str, default='WikiSQL', help='dataset_name')
+    parser.add_argument('--name', type=str, default='exp', help='name of the experiment. It decides where to store samples and models')
+    parser.add_argument('--dataroot', type=str, default='data', help='root of dataset')
+    parser.add_argument('--train_path', type=str, default='wikitrain.jsonl', help='path of training dataset')
+    parser.add_argument('--val_path', type=str, default='wikidev.jsonl', help='path of validation dataset')
+    parser.add_argument('--test_path', type=str, default='wikitest.jsonl', help='path of test dataset')
+    parser.add_argument('--model', type=str, default='roberta', help='chooses which model to use. [roberta|albert|bert]')
+    parser.add_argument('--base_name',type=str,default='large',help='chooses which model to use. [base|large]')
+    parser.add_argument('--results',type=str, default='./results',help='results are saved here')
+    parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
+    parser.add_argument('--logs_dir', type=str, default='./logs', help='logs for tensorboardX are saved here')
+    parser.add_argument('--gpu_ids', type=str, default='0,1,2,3', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+    parser.add_argument('--max_total_length',type=int, default=96, help='max total length of input sequence')
+    parser.add_argument('--where_column_num',type=int, default=4, help='number of where column')
+    parser.add_argument('--op_num',type=int, default=4, help='number of where column')
+    parser.add_argument('--agg_num',type=int, default=6, help='number of where column')
+    #training
+    parser.add_argument('--num_warmup_steps',type=int, default=400, help='number of warmup steps')
+    parser.add_argument("--local_rank", type=int, default=1, help="number of cpu threads to use during batch generation")
+    parser.add_argument('--decay',type=float, default=0.01, help='lr decay')
+    parser.add_argument('--dropout_rate',type=float, default=0.2, help='dropout rate')
+    parser.add_argument('--print_freq', type=int, default=100, help='frequency of showing training results on console')
+    parser.add_argument('--save_latest_freq', type=int, default=500000, help='frequency of saving the latest results')
+    parser.add_argument('--batch_size', type=int, default=64, help='The size of batch size')
+    parser.add_argument('--init_type', type=str, default='normal', help='network initialization [normal | xavier | kaiming | orthogonal]')
+    parser.add_argument('--init_gain', type=float, default=0.02, help='scaling factor for normal, xavier and orthogonal.')
+    parser.add_argument('--epoch', type=int, default=5, help='The number of epoch')
+    parser.add_argument('--save_by_iter', action='store_true', help='whether saves model by iteration')
+    parser.add_argument('--num_val', type=int, default=5, help='start valication when epoch reach ...')
+    parser.add_argument('--lr', type=float, default=3e-5, help='initial learning rate for adam')
+    parser.add_argument('--beta1', type=float, default=0.5, help='momentum term of adam')
+    parser.add_argument('--lr_policy', type=str, default='linear', help='learning rate policy. [linear | step | plateau | cosine]')
+    parser.add_argument('--norm', type=str, default='instance', help='instance normalization or batch normalization [instance | batch | none]')
+    
+    return parser.parse_args()
